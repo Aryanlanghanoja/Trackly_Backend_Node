@@ -58,5 +58,5 @@ function model(sequelize) {
         }
     };
 
-    return sequelize.define("follow_ups", attributes);
+    return sequelize.define("follow_up", attributes);
 }
