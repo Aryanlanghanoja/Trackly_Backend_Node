@@ -25,79 +25,79 @@ async function initialize() {
     });
 
     // Import models with Sequelize instance
-    db.User = require("../models/user.model")(
+    db.user = require("../models/user.model")(
         sequelize
     );
 
-    db.Lead = require("../models/leads.model")(
+    db.lead = require("../models/leads.model")(
         sequelize
     );
 
-    db.Followup = require("../models/followup.model")(
+    db.followup = require("../models/followup.model")(
         sequelize
     );
 
-    db.Task = require("../models/tasks.model")(
+    db.task = require("../models/tasks.model")(
         sequelize
     );
 
-    db.Document = require("../models/documents.model")(
+    db.document = require("../models/documents.model")(
         sequelize
     );
 
-    db.PasswordReset = require("../models/passwordReset.model")(
+    db.passwordreset = require("../models/passwordreset.model")(
         sequelize
     );
 
     // Define model relationships
 
     /**
-     * User has many Leads
+     * user has many leads
      * - A user can create/manage multiple leads
      */
-    db.User.hasMany(db.Lead, {
-        foreignKey: "User_ID",
+    db.user.hasMany(db.lead, {
+        foreignKey: "user_id",
     });
 
-    db.Lead.belongsTo(db.User, {
-        foreignKey: "User_ID",
+    db.lead.belongsTo(db.user, {
+        foreignKey: "user_id",
     });
     
 
     /**
-     * Lead has many Followups
+     * lead has many followups
      * - A lead can have multiple follow-up entries
      */
-    db.Lead.hasMany(db.Followup, {
-        foreignKey: "Lead_ID",
+    db.lead.hasMany(db.followup, {
+        foreignKey: "lead_id",
     });
 
-    db.Followup.belongsTo(db.Lead, {
-        foreignKey: "Lead_ID",
+    db.followup.belongsTo(db.lead, {
+        foreignKey: "lead_id",
     });
 
     /**
-     * Followup has many Tasks
+     * followup has many tasks
      * - Each follow-up may have multiple tasks associated with it
      */
-    db.Followup.hasMany(db.Task, {
-        foreignKey: "FollowUP_ID",
+    db.followup.hasMany(db.task, {
+        foreignKey: "followup_id",
     });
 
-    db.Task.belongsTo(db.Followup, {
-        foreignKey: "FollowUP_ID",
+    db.task.belongsTo(db.followup, {
+        foreignKey: "followup_id",
     });
 
     /**
-     * Task has many Documents
+     * task has many documents
      * - A task may have multiple related documents
      */
-    db.Task.hasMany(db.Document, {
-        foreignKey: "Task_ID",
+    db.task.hasMany(db.document, {
+        foreignKey: "task_id",
     });
 
-    db.Document.belongsTo(db.Task, {
-        foreignKey: "Task_ID",
+    db.document.belongsTo(db.task, {
+        foreignKey: "task_id",
     });
 
     // Sync all models with the database (creates tables if not exist)
@@ -106,7 +106,7 @@ async function initialize() {
         alter: false,
     })
     .then(() => {
-        console.log('PostgreSQL Synced Sucessfully');
+        console.log('PostgreSQL Synced Successfully');
     })
     .catch(err => {
         console.error('Unable to connect to DB:', err);
