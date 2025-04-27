@@ -28,10 +28,10 @@ function model(sequelize) {
     };
 
     const options = {
-        tableName: 'password_resets',
+        tableName: 'password_reset',
         timestamps: true
     };
 
     // Creating the model
-    return sequelize.define("PasswordReset", attributes, options);
+    return sequelize.define("password_reset", attributes, options);
 }
