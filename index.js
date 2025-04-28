@@ -7,7 +7,7 @@ const app = express();
 
 // Database Connection
 const  dbConfig = require("./config/db.config");
-const db = require("./helpers/db.helper");
+const db = require("./helper/db.helper");
 
 // // Routes
 // const webRouter = require("./routes/web.routes");

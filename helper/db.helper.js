@@ -25,27 +25,27 @@ async function initialize() {
     });
 
     // Import models with Sequelize instance
-    db.user = require("../models/user.model")(
+    db.user = require("../model/user.model")(
         sequelize
     );
 
-    db.lead = require("../models/lead.model")(
+    db.lead = require("../model/lead.model")(
         sequelize
     );
 
-    db.follow_up = require("../models/follow_up.model")(
+    db.follow_up = require("../model/follow_up.model")(
         sequelize
     );
 
-    db.task = require("../models/task.model")(
+    db.task = require("../model/task.model")(
         sequelize
     );
 
-    db.document = require("../models/document.model")(
+    db.document = require("../model/document.model")(
         sequelize
     );
 
-    db.password_reset = require("../models/password_reset.model")(
+    db.password_reset = require("../model/password_reset.model")(
         sequelize
     );
 
