@@ -12,7 +12,7 @@ module.exports = model;
 function model(sequelize) {
     const attributes = {
         // Primary key for follow-up
-        followup_id: {
+        follow_up_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true,
