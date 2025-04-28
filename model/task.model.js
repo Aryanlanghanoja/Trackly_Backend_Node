@@ -20,12 +20,12 @@ function model(sequelize) {
         },
 
         // Foreign key from Follow_Ups table
-        followup_id: {
+        follow_up_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
                 model: 'follow_up',
-                key: 'followup_id'
+                key: 'follow_up_id'
             }
         },
 

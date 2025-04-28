@@ -29,23 +29,23 @@ async function initialize() {
         sequelize
     );
 
-    db.lead = require("../models/leads.model")(
+    db.lead = require("../models/lead.model")(
         sequelize
     );
 
-    db.followup = require("../models/followup.model")(
+    db.follow_up = require("../models/follow_up.model")(
         sequelize
     );
 
-    db.task = require("../models/tasks.model")(
+    db.task = require("../models/task.model")(
         sequelize
     );
 
-    db.document = require("../models/documents.model")(
+    db.document = require("../models/document.model")(
         sequelize
     );
 
-    db.passwordreset = require("../models/passwordreset.model")(
+    db.password_reset = require("../models/password_reset.model")(
         sequelize
     );
 
@@ -62,17 +62,29 @@ async function initialize() {
     db.lead.belongsTo(db.user, {
         foreignKey: "user_id",
     });
+
+     /**
+     * user has many folllow_up
+     * - A user can create/manage multiple leads
+     */
+        db.user.hasMany(db.follow_up, {
+            foreignKey: "user_id",
+        });
+    
+        db.follow_up.belongsTo(db.user, {
+            foreignKey: "user_id",
+        });
     
 
     /**
      * lead has many followups
      * - A lead can have multiple follow-up entries
      */
-    db.lead.hasMany(db.followup, {
+    db.lead.hasMany(db.follow_up, {
         foreignKey: "lead_id",
     });
 
-    db.followup.belongsTo(db.lead, {
+    db.follow_up.belongsTo(db.lead, {
         foreignKey: "lead_id",
     });
 
@@ -80,12 +92,12 @@ async function initialize() {
      * followup has many tasks
      * - Each follow-up may have multiple tasks associated with it
      */
-    db.followup.hasMany(db.task, {
-        foreignKey: "followup_id",
+    db.follow_up.hasMany(db.task, {
+        foreignKey: "follow_up_id",
     });
 
-    db.task.belongsTo(db.followup, {
-        foreignKey: "followup_id",
+    db.task.belongsTo(db.follow_up, {
+        foreignKey: "follow_up_id",
     });
 
     /**
@@ -103,7 +115,7 @@ async function initialize() {
     // Sync all models with the database (creates tables if not exist)
     await sequelize.sync(
     {
-        alter: false,
+        alter: true,
     })
     .then(() => {
         console.log('PostgreSQL Synced Successfully');
