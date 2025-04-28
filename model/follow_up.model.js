@@ -24,7 +24,7 @@ function model(sequelize) {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'leads',
+                model: 'lead',
                 key: 'lead_id'
             }
         },
@@ -52,11 +52,16 @@ function model(sequelize) {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'users',
+                model: 'user',
                 key: 'user_id'
             }
         }
     };
 
-    return sequelize.define("follow_up", attributes);
+    const options = {
+        tableName: 'follow_up',
+        timestamps: true
+    };
+
+    return sequelize.define("follow_up", attributes , options);
 }

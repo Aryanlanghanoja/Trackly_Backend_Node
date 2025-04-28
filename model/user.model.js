@@ -101,7 +101,11 @@ function model(sequelize) {
         }
     };
 
+    const options = {
+        tableName: 'user',
+        timestamps: true
+    };
+
     // Creating the model using Sequelize's define method
-    return sequelize.define("user", attributes);
-    
+    return sequelize.define("user", attributes , options);
 }

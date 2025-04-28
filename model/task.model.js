@@ -42,5 +42,10 @@ function model(sequelize) {
         }
     };
 
-    return sequelize.define("task", attributes);
+    const options = {
+        tableName: 'task',
+        timestamps: true
+    };
+
+    return sequelize.define("task", attributes , options);
 }

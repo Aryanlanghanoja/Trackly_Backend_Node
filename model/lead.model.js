@@ -20,11 +20,11 @@ function model(sequelize) {
         },
 
         // Employee name who generated the lead
-        emp_id: {
+        user_id: {
             type: DataTypes.INTEGER,
             allowNull: false ,
             references: {
-                model: 'users',
+                model: 'user',
                 key: 'user_id'
             }
         },
@@ -75,6 +75,11 @@ function model(sequelize) {
         }
     };
 
+    const options = {
+        tableName: 'lead',
+        timestamps: true
+    };
+
     // Creating the model
-    return sequelize.define("lead", attributes);
+    return sequelize.define("lead", attributes , options);
 }
