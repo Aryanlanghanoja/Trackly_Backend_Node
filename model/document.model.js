@@ -24,7 +24,7 @@ function model(sequelize) {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'leads',  // Ensure there's a 'Leads' table/model defined
+                model: 'lead',  // Ensure there's a 'Leads' table/model defined
                 key: 'lead_id'
             }
         },
@@ -58,5 +58,10 @@ function model(sequelize) {
         }
     };
 
-    return sequelize.define("document", attributes);
+    const options = {
+        tableName: 'document',
+        timestamps: true
+    };
+
+    return sequelize.define("document", attributes , options);
 }
