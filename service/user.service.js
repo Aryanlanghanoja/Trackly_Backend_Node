@@ -1,5 +1,7 @@
 const bcrypt = require("bcryptjs");
-const User = require("../model/user.model");
+// const sequelize = require("../config/db.config");
+const model = require("../helper/db.helper")
+const User = model.user
 const PasswordReset = require("../model/password_reset.model");
 const randomString = require('randomstring');
 const sendMail = require("../helper/send_mail");

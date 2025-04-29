@@ -43,14 +43,14 @@ app.get('/', (req, res) => {
 });
 
 // Global error handling middleware
-app.use((err, req, res, next) => {
-    err.statusCode = err.statusCode || 500;
-    err.message = err.message || "Internal Server Error";
+// app.use((err, req, res, next) => {
+//     err.statusCode = err.statusCode || 500;
+//     err.message = err.message || "Internal Server Error";
 
-    res.status(err.statusCode).json({
-        message: err.message,
-    });
-});
+//     res.status(err.statusCode).json({
+//         message: err.message,
+//     });
+// });
 
 app.listen(process.env.PORT, () => {
     console.log(`Server running at http://localhost:${process.env.PORT}`);
