@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const followUpController = require("../controllers/followup.controller");
+const followUpController = require("../controller/follow_up.controller");
 
 // Basic CRUD routes
 router.post("/", followUpController.createFollowUp);

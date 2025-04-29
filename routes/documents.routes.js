@@ -1,4 +1,4 @@
-const documentController = require("../controllers/document.controller");
+const documentController = require("../controller/document.controller");
 const express = require("express");
 const router = express.Router();
 

@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { signUpValidation , loginValidation , forgotValidation  , updateProfileValidation} = require('../helpers/validation');
-const userController = require("../controllers/user.controller");
+const { signUpValidation , loginValidation , forgotValidation  , updateProfileValidation} = require('../helper/validation');
+const userController = require("../controller/user.controller");
 const path = require('path');
 const multer = require('multer');
-const auth = require("../middlewares/auth")
+const auth = require("../middleware/auth")
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb){
