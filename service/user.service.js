@@ -21,8 +21,12 @@ class UserService {
             name: userData.name,
             email: userData.email.toLowerCase(),
             password: hash,
-            image: 'images/' + filename,
-            token: randomToken
+            profile_photo: 'images/' + filename,
+            token: randomToken , 
+            user_name : userData.user_name,
+            role: userData.role,
+            district: userData.district,
+            phone : userData.phone,
         });
 
         let mailSubject = "Verification Email From Griwa Internationals";
