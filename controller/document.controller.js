@@ -1,4 +1,4 @@
-const document_service = require("../services/documents.services");
+const document_service = require("../service/documents.services");
 
 exports.create = (req, res, next) => {
     document_service
