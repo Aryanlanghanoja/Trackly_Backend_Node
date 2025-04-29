@@ -2,7 +2,7 @@ const document_service = require("../service/documents.service");
 
 exports.create = (req, res, next) => {
     document_service
-        .create(req.body)
+        .create(req.body , req.file.fileName)
         .then((response) =>
             res.status(200).send({
                 message: typeof response === "string" ? "Error" : "Success",

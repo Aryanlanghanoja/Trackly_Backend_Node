@@ -25,8 +25,14 @@ async function getById(id) {
 }
 
 // Create a new document
-async function create(params) {
-    const doc = new db.Document(params);
+async function create(params , filenmae) {
+    const doc = new db.Document({
+        lead_id : params.lead_id,
+        task_id : params.task_id,
+        doc_path : "document/" +  filenmae,
+        doc_name : params.doc_name,
+        doc_desc : params.doc_desc,
+    });
     await doc.save();
     return doc;
 }
