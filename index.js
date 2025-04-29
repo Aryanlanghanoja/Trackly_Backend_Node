@@ -19,7 +19,7 @@ const documentRouter = require("./routes/documents.routes");
 
 // Set view engine and public directory
 app.set("view engine", "ejs");
-app.set("views", "./views");
+app.set("view", "./view");
 app.use(express.static("public"));
 
 // Middleware
