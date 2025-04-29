@@ -1,4 +1,4 @@
-const leadService = require("../services/leads.services");
+const leadService = require("../service/lead.service");
 
 exports.createLead = async (req, res) => {
   try {

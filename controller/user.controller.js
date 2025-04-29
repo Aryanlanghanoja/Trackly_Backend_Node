@@ -1,7 +1,7 @@
 const { validationResult } = require("express-validator");
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = process.env;
-const userService = require('../services/user.services');
+const userService = require('../service/user.service');
 
 const register = async (req, res) => {
     try {

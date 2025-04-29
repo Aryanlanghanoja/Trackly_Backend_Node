@@ -1,4 +1,4 @@
-const db = require("../models/followup.model");
+const db = require("../model/follow_up.model");
 const FollowUp = db.Follow_Ups;
 
 const createFollowUp = async (data) => {

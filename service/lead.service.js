@@ -1,4 +1,4 @@
-const db = require("../models/leads.model");
+const db = require("../model/lead.model");
 const Lead = db.Leads;
 
 exports.createLead = async (leadData) => {

@@ -1,4 +1,4 @@
-const followUpService = require("../services/followup.services");
+const followUpService = require("../service/follow_up.service");
 
 // Create a new follow-up
 exports.createFollowUp = async (req, res) => {
