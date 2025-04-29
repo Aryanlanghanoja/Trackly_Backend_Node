@@ -30,7 +30,7 @@ function model(sequelize) {
         },
 
         // Foreign key from Leads table
-        task_id: {
+        task_id: {  
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
