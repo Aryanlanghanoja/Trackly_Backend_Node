@@ -1,8 +1,8 @@
 const bcrypt = require("bcryptjs");
-const User = require("../models/user.model");
-const PasswordReset = require("../models/passwordReset.model");
+const User = require("../model/user.model");
+const PasswordReset = require("../model/password_reset.model");
 const randomString = require('randomstring');
-const sendMail = require("../helpers/sendMail");
+const sendMail = require("../helper/send_mail");
 
 class UserService {
     async createUser(userData, filename) {

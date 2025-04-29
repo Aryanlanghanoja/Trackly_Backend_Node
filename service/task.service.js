@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const db = require("../models/tasks.model");
+const db = require("../model/task.model");
 
 async function getTaskById(id) {
     return await db.Tasks.findByPk(id);
