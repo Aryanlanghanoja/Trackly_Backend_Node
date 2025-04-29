@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const leadController = require("../controller/leads.controller");
+const leadController = require("../controller/lead.controller");
 
 // CRUD routes
 router.post("/", leadController.createLead);

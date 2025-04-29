@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const taskController = require("../controllers/tasks.controller");
+const taskController = require("../controller/task.controller");
 
 // Custom filter routes
 router.get("/id/:id", taskController.getById);
