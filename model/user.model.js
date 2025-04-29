@@ -87,12 +87,13 @@ function model(sequelize) {
             defaultValue: false 
         },
 
-        // To Store the last login time of the use
+        //To Store the last login time of the use
         last_login: { 
             type: DataTypes.DATE,       // Data type: string
             allowNull: false ,              // Cannot be null
             defaultValue: DataTypes.NOW
         },
+        
 
         // To Store the token of the user
         token : {
