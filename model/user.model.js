@@ -89,7 +89,7 @@ function model(sequelize) {
 
         // To Store the last login time of the use
         last_login: { 
-            type: DataTypes.TIME,       // Data type: string
+            type: DataTypes.DATE,       // Data type: string
             allowNull: false ,              // Cannot be null
             defaultValue: DataTypes.NOW
         },
