@@ -1,5 +1,5 @@
-const db = require("../model/lead.model");
-const Lead = db.Leads;
+const model = require("../helper/db.helper")
+const Lead = model.lead;
 
 exports.createLead = async (leadData) => {
   return await Lead.create(leadData);
@@ -21,39 +21,39 @@ exports.updateLead = async (id, updateData) => {
 };
 
 exports.deleteLead = async (id) => {
-  const deleted = await Lead.destroy({ where: { Lead_ID: id } });
+  const deleted = await Lead.destroy({ where: { lead_id: id } });
   return deleted;
 };
 
 // Filters
 exports.getLeadsByEmpId = async (empId) => {
-  return await Lead.findAll({ where: { Emp_Id: empId } });
+  return await Lead.findAll({ where: { user_id: empId } });
 };
 
 exports.getLeadsBySource = async (source) => {
-  return await Lead.findAll({ where: { Source: source } });
+  return await Lead.findAll({ where: { source: source } });
 };
 
 exports.getLeadsByClient = async (client) => {
-  return await Lead.findAll({ where: { Client: client } });
+  return await Lead.findAll({ where: { client: client } });
 };
 
 exports.getLeadsByStatus = async (status) => {
-  return await Lead.findAll({ where: { Status: status } });
+  return await Lead.findAll({ where: { status: status } });
 };
 
 exports.getLeadsByEmail = async (email) => {
-  return await Lead.findAll({ where: { Email: email } });
+  return await Lead.findAll({ where: { email: email } });
 };
 
 exports.getLeadsByContact = async (number) => {
-  return await Lead.findAll({ where: { Contact_Number: number } });
+  return await Lead.findAll({ where: { contact_number: number } });
 };
 
 exports.getLeadsByDateRange = async (start, end) => {
   return await Lead.findAll({
     where: {
-      Date: {
+      date: {
         [db.Sequelize.Op.between]: [start, end],
       },
     },
