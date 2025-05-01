@@ -1,5 +1,5 @@
-const db = require("../model/follow_up.model");
-const FollowUp = db.Follow_Ups;
+const model = require("../helper/db.helper")
+const FollowUp = db.follow_up;
 
 const createFollowUp = async (data) => {
   return await FollowUp.create(data);

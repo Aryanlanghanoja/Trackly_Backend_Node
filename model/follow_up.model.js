@@ -44,7 +44,7 @@ function model(sequelize) {
         // Next follow-up date
         next_followup_date: {
             type: DataTypes.DATEONLY,
-            allowNull: false
+            allowNull: true
         },
 
         // Foreign key from Users table

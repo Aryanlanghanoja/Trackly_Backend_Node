@@ -144,13 +144,20 @@ const updateProfile = async (req, res) => {
         const token = req.headers.authorization.split(' ')[1];
         const decoded = jwt.verify(token, JWT_SECRET);
         
+        const userData = req.body;
         const updateData = {
-            name: req.body.name,
-            email: req.body.email
+            name: userData.name,
+            email: userData.email,
+            password: hash,
+            token: randomToken , 
+            user_name : userData.user_name,
+            role: userData.role,
+            district: userData.district,
+            phone : userData.phone,
         };
 
         if (req.file) {
-            updateData.image = 'images/' + req.file.filename;
+            updateData.profile_photo = 'images/' + req.file.filename;
         }
 
         await userService.updateUserProfile(decoded.id, updateData);
