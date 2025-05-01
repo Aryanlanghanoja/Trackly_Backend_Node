@@ -46,7 +46,6 @@ class UserService {
         }
 
         await user.update({
-            token: null,
             is_verified: true
         });
         return user;
