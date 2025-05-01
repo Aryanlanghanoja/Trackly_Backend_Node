@@ -38,7 +38,8 @@ function model(sequelize) {
         // Date the lead was created
         date: {
             type: DataTypes.DATEONLY,
-            allowNull: false
+            allowNull: false , 
+            defaultValue: DataTypes.NOW
         },
 
         // Client name or reference
@@ -71,7 +72,8 @@ function model(sequelize) {
         // Status of the lead (e.g., active, converted, dropped)
         status: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false , 
+            defaultValue: 'active'
         }
     };
 
