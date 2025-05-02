@@ -102,7 +102,12 @@ const document_service = require("../service/documents.service");
 
 exports.create = async (req, res) => {
     try {
-        const document = await document_service.create(req.body, req.file.fileName);
+        const id = req.params.lead_id ;
+        if (!id) {
+            return res.status(400).json({ message: "Lead ID is required" });
+        }
+
+        const document = await document_service.create(req.body, req.file.fileName , id);
         return res.status(201).json({
             message: "Document created successfully",
             data: document,
