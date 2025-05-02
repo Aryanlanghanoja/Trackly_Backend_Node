@@ -104,13 +104,13 @@ async function initialize() {
      * task has many documents
      * - A task may have multiple related documents
      */
-    db.task.hasMany(db.document, {
-        foreignKey: "task_id",
-    });
+    // db.task.hasMany(db.document, {
+    //     foreignKey: "task_id",
+    // });
 
-    db.document.belongsTo(db.task, {
-        foreignKey: "task_id",
-    });
+    // db.document.belongsTo(db.task, {
+    //     foreignKey: "task_id",
+    // });
 
     // Sync all models with the database (creates tables if not exist)
     await sequelize.sync(

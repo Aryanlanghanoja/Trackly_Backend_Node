@@ -29,15 +29,15 @@ function model(sequelize) {
             }
         },
 
-        // Foreign key from Leads table
-        task_id: {  
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: 'task',  // Ensure there's a 'Leads' table/model defined
-                key: 'task_id'
-            }
-        },
+        // // Foreign key from Leads table
+        // task_id: {  
+        //     type: DataTypes.INTEGER,
+        //     allowNull: false,
+        //     references: {
+        //         model: 'task',  // Ensure there's a 'Leads' table/model defined
+        //         key: 'task_id'
+        //     }
+        // },
 
         // Path to the document file
         doc_path: {
