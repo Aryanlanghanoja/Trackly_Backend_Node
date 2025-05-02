@@ -1,5 +1,5 @@
 const db = require("../helper/db.helper");
-const Document = Document ;
+const Document = db.document ;
 const { Op } = require("sequelize");
 
 module.exports = {
@@ -26,11 +26,10 @@ async function getById(id) {
 }
 
 // Create a new document
-async function create(params , filenmae , id) {
+async function create(params , filename) {
     const doc = new Document({
         lead_id : params.lead_id,
-        task_id : params.task_id,
-        doc_path : `document/${id}/${filename}` ,
+        doc_path : `documents/${params.lead_id}-${filename}` ,
         doc_name : params.doc_name,
         doc_desc : params.doc_desc,
     });

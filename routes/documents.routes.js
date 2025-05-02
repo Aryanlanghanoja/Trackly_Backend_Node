@@ -6,8 +6,7 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb){
-        const id = req.body.lead_id;
-        cb(null, path.join(__dirname, `../public/document/${id}`));
+        cb(null, path.join(__dirname, `../public/documents`));
     } ,
     filename: function(req, file, cb){
         const name = Date.now() + '-' + file.originalname ;
@@ -47,7 +46,7 @@ const upload = multer({
 // });
 
 // Create a new document
-router.post("/:lead_id", upload.single('document') , documentController.create);
+router.post("/", upload.single('document') , documentController.create);
 
 // Get all documents
 router.get("/", documentController.findAll);
