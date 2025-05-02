@@ -1,4 +1,5 @@
 const db = require("../helper/db.helper");
+const Document = Document ;
 const { Op } = require("sequelize");
 
 module.exports = {
@@ -14,22 +15,22 @@ module.exports = {
 
 // Get all documents
 async function getAll() {
-    return await db.Document.findAll();
+    return await Document.findAll();
 }
 
 // Get document by primary key ID
 async function getById(id) {
-    const document = await db.Document.findByPk(id);
+    const document = await Document.findByPk(id);
     if (!document) return "Document not found";
     return document;
 }
 
 // Create a new document
-async function create(params , filenmae) {
-    const doc = new db.Document({
+async function create(params , filenmae , id) {
+    const doc = new Document({
         lead_id : params.lead_id,
         task_id : params.task_id,
-        doc_path : "document/" +  filenmae,
+        doc_path : `document/${id}/${filename}` ,
         doc_name : params.doc_name,
         doc_desc : params.doc_desc,
     });
@@ -39,7 +40,7 @@ async function create(params , filenmae) {
 
 // Update a document by ID
 async function update(id, params) {
-    const doc = await db.Document.findByPk(id);
+    const doc = await Document.findByPk(id);
     if (!doc) return "Document not found";
 
     Object.assign(doc, params);
@@ -49,13 +50,13 @@ async function update(id, params) {
 
 // Delete a document by ID
 async function deleteByID(id) {
-    const result = await db.Document.destroy({ where: { Documet_ID: id } });
+    const result = await Document.destroy({ where: { Documet_ID: id } });
     return result > 0 ? "Deleted successfully" : "Document not found";
 }
 
 // Get all documents by Lead ID
 async function getByLeadId(leadId) {
-    return await db.Document.findAll({
+    return await Document.findAll({
         where: {
             Lead_ID: leadId
         }
@@ -68,7 +69,7 @@ async function getByFollowupId(followupId) {
         where: {
             FollowUP_ID: followupId
         },
-        include: db.Document
+        include: Document
     });
 
     // Flatten the document results from each task
@@ -78,7 +79,7 @@ async function getByFollowupId(followupId) {
 
 // Search by document name within a lead
 async function searchByFileNameInLead(leadId, fileName) {
-    const docs = await db.Documents.findAll({
+    const docs = await Documents.findAll({
         where: {
             Lead_ID: leadId,
             Doc_Name: { [Op.like]: `%${fileName}%` }

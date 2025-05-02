@@ -6,8 +6,8 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb){
-        const id = req.body.leadId;
-        cb(null, path.join(__dirname, '../public/document/'+id));
+        const id = req.body.lead_id;
+        cb(null, path.join(__dirname, `../public/document/${id}`));
     } ,
     filename: function(req, file, cb){
         const name = Date.now() + '-' + file.originalname ;
@@ -16,12 +16,21 @@ const storage = multer.diskStorage({
 });
 
 const filefilter = (req , file , cb) => {
-    if(file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'application/pdf' || file.mimetype === 'application/msword' || file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'){
-        cb(null , true);
-    }
-    else {
-        cb(null, false);
-    }
+    if (
+        file.mimetype === 'image/jpg' ||
+        file.mimetype === 'image/jpeg' ||
+        file.mimetype === 'image/png' ||
+        file.mimetype === 'application/pdf' ||
+        file.mimetype === 'application/msword' ||
+        file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+        file.mimetype === 'application/vnd.ms-excel' ||
+        file.mimetype === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      ) {
+        cb(null, true);
+      } else {
+        cb(new Error('Unsupported file type'), false);
+      }
+      
 }
 
 const upload = multer({ 
@@ -29,16 +38,16 @@ const upload = multer({
     fileFilter: filefilter,
 });
 
-router.post("/upload", upload.single('image'), (req, res) => {
-    const file = req.file;
-    if (!file) {
-        return res.status(400).json({ error: 'No file uploaded' });
-    }
-    res.status(200).json({ message: 'File uploaded successfully', file: file });
-});
+// router.post("/upload", upload.single('document'), (req, res) => {
+//     const file = req.file;
+//     if (!file) {
+//         return res.status(400).json({ error: 'No file uploaded' });
+//     }
+//     res.status(200).json({ message: 'File uploaded successfully', file: file });
+// });
 
 // Create a new document
-router.post("/", upload.single('image') , documentController.create);
+router.post("/:lead_id", upload.single('document') , documentController.create);
 
 // Get all documents
 router.get("/", documentController.findAll);
