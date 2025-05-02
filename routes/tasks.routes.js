@@ -8,6 +8,7 @@ router.get("/followup/:followupId", taskController.getByFollowupId);
 router.get("/deadline-range", taskController.getByDeadlineRange);
 
 // CRUD routes
+router.get("/", taskController.getAll);
 router.post("/", taskController.create);
 router.put("/:id", taskController.update);
 router.delete("/:id", taskController.remove);
