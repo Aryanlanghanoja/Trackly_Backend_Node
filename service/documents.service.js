@@ -1,16 +1,19 @@
 const db = require("../helper/db.helper");
 const Document = db.document ;
+const path = require("path");
+const fs = require("fs");
 const { Op } = require("sequelize");
 
 module.exports = {
     getAll,
     getById,
+    downloadDocument,
     create,
     update,
     deleteByID,
     getByLeadId,
     getByFollowupId,
-    searchByFileNameInLead
+    searchByFileNameInLead 
 };
 
 // Get all documents
@@ -25,11 +28,18 @@ async function getById(id) {
     return document;
 }
 
+// Download document 
+async function downloadDocument(id) {
+    const document = await Document.findByPk(id);
+    if (!document) return "Document not found";
+    return document.doc_path;
+}
+
 // Create a new document
 async function create(params , filename) {
     const doc = new Document({
         lead_id : params.lead_id,
-        doc_path : `documents/${params.lead_id}-${filename}` ,
+        doc_path : `documents/${filename}` ,
         doc_name : params.doc_name,
         doc_desc : params.doc_desc,
     });
@@ -38,18 +48,42 @@ async function create(params , filename) {
 }
 
 // Update a document by ID
-async function update(id, params) {
+async function update(id, params, file) {
     const doc = await Document.findByPk(id);
     if (!doc) return "Document not found";
 
+    if (file) {
+        const oldPath = path.join(__dirname, "..",  "public" , doc.doc_path);
+        console.log(oldPath)
+        if (fs.existsSync(oldPath)) {
+            fs.unlinkSync(oldPath);
+            console.log("Deleted old file");
+            doc.doc_path = `documents/${file.filename}`;
+        }
+    }
+
+    // if (file) {
+    //     doc.doc_path = `documents/${doc.lead_id}#${file.filename}`;
+    // }
+
     Object.assign(doc, params);
+
     await doc.save();
     return doc;
 }
 
 // Delete a document by ID
 async function deleteByID(id) {
-    const result = await Document.destroy({ where: { Documet_ID: id } });
+    const doc = await Document.findByPk(id);
+    if (!doc) return "Document not found";
+
+    const oldPath = path.join(__dirname, "..", "public", doc.doc_path);
+    if (fs.existsSync(oldPath)) {
+        fs.unlinkSync(oldPath);
+        console.log("Deleted old file");
+    }
+
+    const result = await Document.destroy({ where: { documet_id: id } });
     return result > 0 ? "Deleted successfully" : "Document not found";
 }
 

@@ -101,11 +101,12 @@
 const document_service = require("../service/documents.service");
 
 exports.create = async (req, res) => {
+    console.log(req.body);
+    console.log(req.file);
     try {
-        console.log(req.file)
         const document = await document_service.create(req.body, req.file.filename);
         return res.status(201).json({
-            message: "Document created successfully",
+            message: "Document Created Successfully",
             data: document,
         });
     } catch (error) {
@@ -114,6 +115,24 @@ exports.create = async (req, res) => {
         });
     }
 };
+
+exports.download = async (req, res) => {
+    try {
+        const document = await document_service.download(req.params.id);
+        if (!document) {
+            return res.status(404).json({ message: "Document not found" });
+        }
+        const filePath = path.join(__dirname, "..", "public", document.doc_path);
+        const fileName = document.doc_name;
+        res.download(filePath, fileName); 
+    } 
+
+    catch (error) {
+        return res.status(500).json({
+            message: error.message || "Failed to download document",
+        }); 
+    }
+}
 
 exports.findAll = async (req, res) => {
     try {
@@ -148,18 +167,20 @@ exports.findOne = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        const updated = await document_service.update(req.params.id, req.body);
+        const updated = await document_service.update(req.params.id, req.body , req.file);
         return res.status(200).json({
             message: "Document updated successfully",
             data: updated,
         });
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             message: error.message || "Failed to update document",
         });
     }
 };
 
+exports
 exports.delete = async (req, res) => {
     try {
         await document_service.deleteByID(req.params.id);

@@ -120,6 +120,10 @@ class UserService {
     async updateUserProfile(userId, updateData) {
         await User.update(updateData, { where: { id: userId } });
     }
+
+    async deleteUserById(userId) {
+        await User.destroy({ where: { user_id: userId } });
+    }
 }
 
 module.exports = new UserService();

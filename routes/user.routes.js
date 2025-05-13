@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 });
 
 const filefilter = (req , file , cb) => {
-    if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png'){
+    if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg'){
         cb(null , true);
     }
     else {
@@ -30,13 +30,13 @@ const upload = multer({
     fileFilter: filefilter,
 });
 
-
 router.post("/register", upload.single('image') , signUpValidation, userController.register);
 router.post("/login", loginValidation , userController.login);
 router.get('/get-user', auth.isAuthorize ,userController.getUser);
 router.post('/forgot-password', forgotValidation , userController.forgotPassword);
-router.post('/update_profile', upload.single('image') , updateProfileValidation, auth.isAuthorize , userController.updateProfile);
-
+router.put('/update_profile', upload.single('image') , updateProfileValidation, auth.isAuthorize , userController.updateProfile);
+router.post('/logout', userController.logout);
+router.delete('/delete_profile', auth.isAuthorize, userController.deleteProfile);
 
 module.exports = router;
 

@@ -64,7 +64,7 @@ router.get("/followup/:followupId", documentController.findByFollowupId);
 router.get("/lead/:leadId/search/:fileName", documentController.searchByFileNameInLead);
 
 // Update a document by ID
-router.put("/:id", documentController.update);
+router.put("/:id",  upload.single('document') , documentController.update);
 
 // Delete a document by ID
 router.delete("/:id", documentController.delete);
