@@ -41,10 +41,13 @@ const login = async (req, res) => {
 
         const user = await userService.loginUser(req.body.email, req.body.password);
         const token = jwt.sign(
-            { id: user.id, is_admin: user.is_admin },
+            { id: user.user_id, is_admin: user.is_admin },
             JWT_SECRET,
             { expiresIn: '1h' }
         );
+
+        // Setting Session Data
+        req.session.token = token;
 
         return res.status(200).json({
             message: "Login Successfully",
@@ -71,7 +74,7 @@ const getUser = async (req, res) => {
             success: true
         });
     } catch (error) {
-        return res.status(401).json({ message: error.message });
+        return res.status(401).json({ message: error });
     }
 };
 
@@ -157,6 +160,11 @@ const updateProfile = async (req, res) => {
         };
 
         if (req.file) {
+            const oldPath = path.join(__dirname, "..",  "public" , doc.doc_path);
+            if (fs.existsSync(oldPath)) {
+                fs.unlinkSync(oldPath);  
+            }
+
             updateData.profile_photo = 'images/' + req.file.filename;
         }
 
@@ -169,6 +177,51 @@ const updateProfile = async (req, res) => {
     }
 };
 
+const logout = (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({ message: 'Logout failed', error: err });
+        }
+
+        // Clear the cookie from the client side
+        res.clearCookie('connect.sid'); //
+
+        return res.status(200).json({ message: 'Logged out successfully' });
+    });
+};
+
+const deleteProfile = async (req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const token = req.headers.authorization.split(' ')[1];
+        const decoded = jwt.verify(token, JWT_SECRET);
+
+        const picture = decoded.profile_photo;
+
+        if (picture) {
+            const oldPath = path.join(__dirname, "..",  "public", picture);
+            if (fs.existsSync(oldPath)) {
+                fs.unlinkSync(oldPath);
+            } 
+        }
+
+        await userService.deleteUserById(decoded.id);
+
+        return res.status(200).json({
+            message: "Profile deleted successfully"
+        });
+    } catch (error) {
+        return res.status(400).json({
+            message: "Failed to delete profile",
+            error: error.message
+        });
+    }
+};
+
 module.exports = {
     register,
     verifyMail,
@@ -177,5 +230,7 @@ module.exports = {
     forgotPassword,
     resetPasswordLoad,
     resetPassword,
-    updateProfile
+    updateProfile,
+    logout,
+    deleteProfile
 };
