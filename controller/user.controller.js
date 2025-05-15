@@ -223,20 +223,13 @@ const deleteProfile = async(req, res) => {
         const picture = decoded.profile_photo;
 
         if (picture) {
-<<<<<<< Updated upstream
-            const oldPath = path.join(__dirname, "..",  "public", picture);
-=======
-<<<<<<< HEAD
             const oldPath = path.join(__dirname, "..", "public", picture);
-            console.log(oldPath);
-=======
-            const oldPath = path.join(__dirname, "..",  "public", picture);
->>>>>>> 8cf4d274cb239384c860a51e796776f08991bdb4
->>>>>>> Stashed changes
+            console.log(oldPath); // keep or remove based on need
             if (fs.existsSync(oldPath)) {
                 fs.unlinkSync(oldPath);
             }
         }
+
 
         await userService.deleteUserById(decoded.id);
 
