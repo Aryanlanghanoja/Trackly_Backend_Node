@@ -236,64 +236,41 @@ const logout = (req, res) => {
   });
 };
 
-const deleteProfile = async(req, res) => {
+const deleteProfile = async (req, res) => {
     try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
-
-        const token = req.headers.authorization.split(' ')[1];
-        const decoded = jwt.verify(token, JWT_SECRET);
-
-        const picture = decoded.profile_photo;
-
-        if (picture) {
-
-            const oldPath = path.join(__dirname, "..",  "public", picture);
-            if (fs.existsSync(oldPath)) {
-                fs.unlinkSync(oldPath);
-            }
-        }
-
-
-        await userService.deleteUserById(decoded.id);
-
-        return res.status(200).json({
-            message: "Profile deleted successfully"
-        });
-    } catch (error) {
-        return res.status(400).json({
-            message: "Failed to delete profile",
-            error: error.message
-        });
-    }
-
-    const token = req.headers.authorization.split(" ")[1];
-    const decoded = jwt.verify(token, JWT_SECRET);
-
-    const picture = decoded.profile_photo;
-
-    if (picture) {
-      const oldPath = path.join(__dirname, "..", "public", picture);
-
-      if (fs.existsSync(oldPath)) {
-        fs.unlinkSync(oldPath);
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
       }
+  
+      const token = req.headers.authorization.split(" ")[1];
+      const decoded = jwt.verify(token, JWT_SECRET);
+  
+      const picture = decoded.profile_photo;
+  
+      if (picture) {
+        const oldPath = path.join(__dirname, "..", "public", picture);
+        if (fs.existsSync(oldPath)) {
+          fs.unlinkSync(oldPath);
+        }
+      }
+  
+      await userService.deleteUserById(decoded.id);
+  
+      return res.status(200).json({
+        message: "Profile deleted successfully",
+      });
+  
+    } catch (error) {
+      return res.status(400).json({
+        message: "Failed to delete profile",
+        error: error.message,
+      });
     }
+  };
+  
 
-    await userService.deleteUserById(decoded.id);
 
-    return res.status(200).json({
-      message: "Profile deleted successfully",
-    });
-  } catch (error) {
-    return res.status(400).json({
-      message: "Failed to delete profile",
-      error: error.message,
-    });
-  }
-};
 
 module.exports = {
   getEmployees,
