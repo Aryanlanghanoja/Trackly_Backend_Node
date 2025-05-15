@@ -6,7 +6,6 @@ exports.createFollowUp = async (req, res) => {
     const followup = await followUpService.createFollowUp(req.body);
     res.status(201).json(followup);
   } catch (error) {
-    console.log(error.message);
     res.status(500).json({ error: error.message });
   }
 };

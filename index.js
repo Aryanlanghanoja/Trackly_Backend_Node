@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require("body-parser");
 const session = require('express-session');
+const path = require('path');
 
 const app = express();
 
@@ -21,7 +22,9 @@ const documentRouter = require("./routes/documents.routes");
 // Set view engine and public directory
 app.set("view engine", "ejs");
 app.set("view", "./view");
-app.use(express.static("public"));
+app.use('/public', express.static(path.join(__dirname, 'public/')));
+// app.use('/images', express.static(path.join(__dirname, 'public/images/')));
+// app.use('/documents', express.static(path.join(__dirname, 'public/documents/')));
 
 // Middleware
 app.use(cors({
