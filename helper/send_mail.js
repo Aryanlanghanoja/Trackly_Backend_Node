@@ -20,6 +20,7 @@ const sendMail = async (email , mailSubject , content) => {
             to: email,
             subject: mailSubject,
             html: content,
+            name: "Griwa International"
         };
 
         transport.sendMail(mailOptions , function(error , info) {
