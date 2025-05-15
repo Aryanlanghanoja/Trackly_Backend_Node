@@ -5,10 +5,14 @@ const bodyParser = require("body-parser");
 const session = require('express-session');
 const path = require('path');
 
+const passport = require("passport");
+const cookieSession = require("cookie-session");
+const passportStrategy = require("./passport");
+const authRoute = require("./middleware/auth");
 const app = express();
 
 // Database Connection
-const  dbConfig = require("./config/db.config");
+const dbConfig = require("./config/db.config");
 const db = require("./helper/db.helper");
 
 // Routes
@@ -36,14 +40,22 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
-    secret: process.env.SESSION_SECRET, // ideally store this in env variables
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false } // set `true` if using HTTPS
+    cookie: {
+        secure: false,
+        httpOnly: true,
+        sameSite: 'lax' // important for cross-origin
+    }
 }));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Route middlewares
 app.use("/", webRouter);
+app.use("/auth", authRoute.router);
 app.use("/api/user", userRouter);
 app.use("/api/lead", leadRouter);
 app.use("/api/followup", followupRouter);

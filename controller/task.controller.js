@@ -1,5 +1,15 @@
 const taskService = require("../service/task.service");
 
+exports.getAll = async (req, res) => {
+    try {
+        const task = await taskService.getAllTask();
+        if (!task) return res.status(404).json({ message: "Task not found" });
+        res.json(task);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
 exports.getById = async (req, res) => {
     try {
         const task = await taskService.getTaskById(req.params.id);
