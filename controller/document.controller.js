@@ -101,8 +101,6 @@
 const document_service = require("../service/documents.service");
 
 exports.create = async (req, res) => {
-    console.log(req.body);
-    console.log(req.file);
     try {
         const document = await document_service.create(req.body, req.file.filename);
         return res.status(201).json({
