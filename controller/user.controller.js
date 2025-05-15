@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = process.env;
 const userService = require('../service/user.service');
 
-const getEmployees = async (req, res) => {
+const getEmployees = async(req, res) => {
     try {
         const employees = await userService.getEmployees();
         return res.status(200).json({
@@ -17,7 +17,7 @@ const getEmployees = async (req, res) => {
     }
 };
 
-const register = async (req, res) => {
+const register = async(req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -35,7 +35,7 @@ const register = async (req, res) => {
     }
 };
 
-const verifyMail = async (req, res) => {
+const verifyMail = async(req, res) => {
     try {
         await userService.verifyUserEmail(req.query.token);
         return res.render('mail_verification', {
@@ -46,7 +46,7 @@ const verifyMail = async (req, res) => {
     }
 };
 
-const login = async (req, res) => {
+const login = async(req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -54,10 +54,8 @@ const login = async (req, res) => {
         }
 
         const user = await userService.loginUser(req.body.email, req.body.password);
-        const token = jwt.sign(
-            { id: user.user_id, is_admin: user.is_admin },
-            JWT_SECRET,
-            { expiresIn: '1h' }
+        const token = jwt.sign({ id: user.user_id, is_admin: user.is_admin },
+            JWT_SECRET, { expiresIn: '1h' }
         );
 
         // Setting Session Data
@@ -75,7 +73,7 @@ const login = async (req, res) => {
     }
 };
 
-const getUser = async (req, res) => {
+const getUser = async(req, res) => {
     try {
         const authtoken = req.headers.authorization.split(' ')[1];
         const decoded = jwt.verify(authtoken, JWT_SECRET);
@@ -92,7 +90,7 @@ const getUser = async (req, res) => {
     }
 };
 
-const forgotPassword = async (req, res) => {
+const forgotPassword = async(req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -108,7 +106,7 @@ const forgotPassword = async (req, res) => {
     }
 };
 
-const resetPasswordLoad = async (req, res) => {
+const resetPasswordLoad = async(req, res) => {
     try {
         if (!req.query.token) {
             return res.render('Not_Found');
@@ -126,7 +124,7 @@ const resetPasswordLoad = async (req, res) => {
     }
 };
 
-const resetPassword = async (req, res) => {
+const resetPassword = async(req, res) => {
     try {
         if (!req.body || !req.body.password || !req.body.confirm_password) {
             return res.status(400).json({
@@ -151,7 +149,7 @@ const resetPassword = async (req, res) => {
     }
 };
 
-const updateProfile = async (req, res) => {
+const updateProfile = async(req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -160,23 +158,23 @@ const updateProfile = async (req, res) => {
 
         const token = req.headers.authorization.split(' ')[1];
         const decoded = jwt.verify(token, JWT_SECRET);
-        
+
         const userData = req.body;
         const updateData = {
             name: userData.name,
             email: userData.email,
             password: hash,
-            token: randomToken , 
-            user_name : userData.user_name,
+            token: randomToken,
+            user_name: userData.user_name,
             role: userData.role,
             district: userData.district,
-            phone : userData.phone,
+            phone: userData.phone,
         };
 
         if (req.file) {
-            const oldPath = path.join(__dirname, "..",  "public" , doc.doc_path);
+            const oldPath = path.join(__dirname, "..", "public", doc.doc_path);
             if (fs.existsSync(oldPath)) {
-                fs.unlinkSync(oldPath);  
+                fs.unlinkSync(oldPath);
             }
 
             updateData.profile_photo = 'images/' + req.file.filename;
@@ -212,7 +210,7 @@ const logout = (req, res) => {
     });
 };
 
-const deleteProfile = async (req, res) => {
+const deleteProfile = async(req, res) => {
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -225,10 +223,19 @@ const deleteProfile = async (req, res) => {
         const picture = decoded.profile_photo;
 
         if (picture) {
+<<<<<<< Updated upstream
             const oldPath = path.join(__dirname, "..",  "public", picture);
+=======
+<<<<<<< HEAD
+            const oldPath = path.join(__dirname, "..", "public", picture);
+            console.log(oldPath);
+=======
+            const oldPath = path.join(__dirname, "..",  "public", picture);
+>>>>>>> 8cf4d274cb239384c860a51e796776f08991bdb4
+>>>>>>> Stashed changes
             if (fs.existsSync(oldPath)) {
                 fs.unlinkSync(oldPath);
-            } 
+            }
         }
 
         await userService.deleteUserById(decoded.id);
@@ -255,6 +262,6 @@ module.exports = {
     resetPassword,
     updateProfile,
     logout,
-    deleteProfile ,
+    deleteProfile,
     getSessionData
 };
