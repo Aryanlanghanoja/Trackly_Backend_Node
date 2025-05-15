@@ -247,12 +247,13 @@ const deleteProfile = async(req, res) => {
         const picture = decoded.profile_photo;
 
         if (picture) {
-            const oldPath = path.join(__dirname, "..",  "public", picture);
 
+            const oldPath = path.join(__dirname, "..",  "public", picture);
             if (fs.existsSync(oldPath)) {
                 fs.unlinkSync(oldPath);
             }
         }
+
 
         await userService.deleteUserById(decoded.id);
 
