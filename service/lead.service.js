@@ -3,13 +3,13 @@ const Lead = model.lead;
 
 exports.createLead = async (leadData) => {
   return await Lead.create({
-    user_id: leadData.user_id,
+    // user_id: leadData.user_id,
     source: leadData.source,
     client: leadData.client,
     // status: leadData.status,
     email: leadData.email,
     contact_number: leadData.contact_number,
-    // date: leadData.date,
+    date: leadData.date,
     district: leadData.district,
   });
 };

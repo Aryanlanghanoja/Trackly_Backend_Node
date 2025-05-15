@@ -22,11 +22,11 @@ function model(sequelize) {
         // Employee name who generated the lead
         user_id: {
             type: DataTypes.INTEGER,
-            allowNull: false ,
+            allowNull: true ,
             references: {
                 model: 'user',
                 key: 'user_id'
-            }
+            } ,
         },
 
         // Source of the lead
@@ -73,7 +73,7 @@ function model(sequelize) {
         status: {
             type: DataTypes.STRING,
             allowNull: false , 
-            defaultValue: 'active'
+            defaultValue: 'Active'
         }
     };
 

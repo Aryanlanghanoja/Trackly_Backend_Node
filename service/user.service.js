@@ -7,6 +7,15 @@ const randomString = require('randomstring');
 const sendMail = require("../helper/send_mail");
 
 class UserService {
+    async getEmployees() {
+        const users = await User.findAll({
+            where: {
+                role: 'Employee'
+            }
+        });
+        return users;
+    }
+
     async createUser(userData, filename) {
         const existingUser = await User.findOne({
             where: { email: userData.email.toLowerCase() }

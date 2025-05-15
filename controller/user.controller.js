@@ -3,6 +3,20 @@ const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = process.env;
 const userService = require('../service/user.service');
 
+const getEmployees = async (req, res) => {
+    try {
+        const employees = await userService.getEmployees();
+        return res.status(200).json({
+            message: "Employees Fetched Successfully",
+            employees
+        });
+    } catch (error) {
+        return res.status(400).json({
+            message: error.message,
+        });
+    }
+};
+
 const register = async (req, res) => {
     try {
         const errors = validationResult(req);
@@ -177,6 +191,14 @@ const updateProfile = async (req, res) => {
     }
 };
 
+const getSessionData = (req, res) => {
+    if (req.session.token) {
+        return res.status(200).json({ token: req.session.token });
+    } else {
+        return res.status(401).json({ message: 'User not logged in' });
+    }
+};
+
 const logout = (req, res) => {
     req.session.destroy((err) => {
         if (err) {
@@ -204,6 +226,7 @@ const deleteProfile = async (req, res) => {
 
         if (picture) {
             const oldPath = path.join(__dirname, "..",  "public", picture);
+            console.log(oldPath);
             if (fs.existsSync(oldPath)) {
                 fs.unlinkSync(oldPath);
             } 
@@ -223,6 +246,7 @@ const deleteProfile = async (req, res) => {
 };
 
 module.exports = {
+    getEmployees,
     register,
     verifyMail,
     login,
@@ -232,5 +256,6 @@ module.exports = {
     resetPassword,
     updateProfile,
     logout,
-    deleteProfile
+    deleteProfile ,
+    getSessionData
 };
