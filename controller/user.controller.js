@@ -35,6 +35,30 @@ const register = async(req, res) => {
     }
 };
 
+const createEmployeeFromExcel = async(req, res) => {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const users = req.body; // Expecting an array of lead objects
+        const createdLeads = [];
+
+        for (const user of users) {
+            const createdUser = await userService.createUserExcel(user);
+            createdLeads.push(createdUser);
+        }
+        return res.status(201).json({
+            message: "Users Created Successfully",
+        });
+    } catch (error) {
+        return res.status(400).json({
+            message: error,
+        });
+    }
+};
+
 const verifyMail = async(req, res) => {
     try {
         await userService.verifyUserEmail(req.query.token);
@@ -223,8 +247,8 @@ const deleteProfile = async(req, res) => {
         const picture = decoded.profile_photo;
 
         if (picture) {
-            const oldPath = path.join(__dirname, "..", "public", picture);
-            console.log(oldPath); // keep or remove based on need
+
+            const oldPath = path.join(__dirname, "..",  "public", picture);
             if (fs.existsSync(oldPath)) {
                 fs.unlinkSync(oldPath);
             }
@@ -247,6 +271,7 @@ const deleteProfile = async(req, res) => {
 module.exports = {
     getEmployees,
     register,
+    createEmployeeFromExcel,
     verifyMail,
     login,
     getUser,

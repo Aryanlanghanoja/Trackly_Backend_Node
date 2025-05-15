@@ -5,6 +5,8 @@ const leadController = require("../controller/lead.controller");
 // CRUD routes
 router.post("/", leadController.createLead);
 router.post("/excel", leadController.createLeadFromExcel);
+router.get("/unassigned", leadController.unassignedLeads);
+router.get("/date-range", leadController.getLeadsByDateRange);
 router.get("/", leadController.getAllLeads);
 router.get("/:id", leadController.getLeadById);
 router.put("/:id", leadController.updateLead);
@@ -17,6 +19,5 @@ router.get("/client/:client", leadController.getLeadsByClient);
 router.get("/status/:status", leadController.getLeadsByStatus);
 router.get("/email/:email", leadController.getLeadsByEmail);
 router.get("/contact/:contact", leadController.getLeadsByContact);
-router.get("/date-range", leadController.getLeadsByDateRange);
 
 module.exports = router;

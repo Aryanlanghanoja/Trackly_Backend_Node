@@ -48,6 +48,38 @@ class UserService {
         return user;
     }
 
+    async createUserExcel(userData) {
+        const existingUser = await User.findOne({
+            where: { email: userData.email.toLowerCase() }
+        });
+
+        if (existingUser) {
+            throw new Error("Email Already Exists");
+        }
+
+        const hash = await bcrypt.hash(userData.password, 10);
+        const randomToken = randomString.generate();
+
+        const user = await User.create({
+            name: userData.name,
+            email: userData.email.toLowerCase(),
+            password: hash,
+            profile_photo: '',
+            token: randomToken , 
+            user_name : userData.user_name,
+            role: userData.role,
+            district: userData.district,
+            phone : userData.phone,
+        });
+
+        let mailSubject = "Verification Email From Griwa Internationals";
+        let content = '<p> Hello ' + userData.name + ', \
+        Please<a href="http://127.0.0.1:3000/mail_verification?token='+ randomToken + '">Verify</a> Your Email Address.</p>';
+        await sendMail(userData.email, mailSubject, content);
+
+        return user;
+    }
+
     async verifyUserEmail(token) {
         const user = await User.findOne({ where: { token } });
         if (!user) {

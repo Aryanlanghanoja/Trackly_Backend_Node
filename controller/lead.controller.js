@@ -48,6 +48,25 @@ exports.getLeadById = async (req, res) => {
   }
 };
 
+exports.unassignedLeads = async (req, res) => {
+  try {
+      const leads = await leadService.unassignedLeads();
+      if (!leads || leads.length === 0) {
+          return res.status(200).json({ 
+              message: "No unassigned leads found",
+              leads: []
+          });
+      }
+      res.status(200).json({
+          message: "Unassigned leads retrieved successfully",
+          leads: leads
+      });
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Error retrieving unassigned leads" });
+  }
+};
+
 exports.updateLead = async (req, res) => {
   try {
     const updated = await leadService.updateLead(req.params.id, req.body);
