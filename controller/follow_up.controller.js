@@ -64,7 +64,7 @@ exports.deleteFollowUp = async (req, res) => {
 exports.getFollowUpsByLeadId = async (req, res) => {
   try {
     const followups = await followUpService.getFollowUpsByLeadId(req.params.leadId);
-    res.status(200).json(followups);
+    res.status(200).json({follow_ups : followups});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

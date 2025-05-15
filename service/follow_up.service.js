@@ -29,9 +29,16 @@ const deleteFollowUp = async (id) => {
 
 // 🔍 Filter: Get follow-ups by Lead_ID
 const getFollowUpsByLeadId = async (leadId) => {
-  return await FollowUp.findAll({
-    where: { Lead_ID: leadId },
-  });
+  try {
+    const followups = await FollowUp.findAll({
+      where: { lead_id: leadId },
+    });
+
+    // Ensure an array is always returned
+    return Array.isArray(followups) ? followups : [];
+  } catch (error) {
+    return [];
+  }
 };
 
 // 🔍 Filter: Get follow-ups by Next_followup_date
