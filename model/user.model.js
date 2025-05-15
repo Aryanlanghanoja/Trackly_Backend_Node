@@ -24,7 +24,7 @@ function model(sequelize) {
         user_name: { 
             type: DataTypes.STRING,       // Data type: string
             allowNull: false,             // Cannot be null
-            unique: true                 // Set as the Unique Parameter
+            unique: false                 // Set as the Unique Parameter
         },
 
         // Name of The User

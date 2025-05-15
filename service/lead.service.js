@@ -1,4 +1,5 @@
-const model = require("../helper/db.helper")
+const model = require("../helper/db.helper");
+const { Op } = require('sequelize');
 const Lead = model.lead;
 
 exports.createLead = async (leadData) => {
@@ -35,6 +36,17 @@ exports.deleteLead = async (id) => {
 };
 
 // Filters
+
+exports.unassignedLeads = async () => {
+  return await Lead.findAll({
+    where: {
+      user_id: {
+        [Op.is]: null
+      }
+    },
+  });
+};
+
 exports.getLeadsByEmpId = async (empId) => {
   return await Lead.findAll({ where: { user_id: empId } });
 };
