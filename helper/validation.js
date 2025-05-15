@@ -7,7 +7,7 @@ exports.signUpValidation = [
     check('password' , "Password Is Required").isLength({min:6}),
     check('image').custom( (value, { req }) => {
 
-        if (req.file.mimetype == 'imahe/jpeg' || req.file.mimetype == 'image/png') {
+        if (req.file.mimetype == 'imahe/jpeg' || req.file.mimetype == 'image/png' || req.file.mimetype == 'image/jpg') {
             return true;
         }
 
@@ -15,7 +15,7 @@ exports.signUpValidation = [
             return false;
         }
         
-    }).withMessage('Please Upload an Image type PNG , JPEG'),
+    }).withMessage('Please Upload an Image type PNG , JPG , JPEG'),
 ]
 
 exports.loginValidation = [

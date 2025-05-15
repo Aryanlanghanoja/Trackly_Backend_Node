@@ -30,8 +30,11 @@ const upload = multer({
     fileFilter: filefilter,
 });
 
+
 router.post("/register", upload.single('image') , signUpValidation, userController.register);
+router.get("/get_employees", userController.getEmployees);
 router.post("/login", loginValidation , userController.login);
+router.get('/get-token', userController.getSessionData);
 router.get('/get-user', auth.isAuthorize ,userController.getUser);
 router.post('/forgot-password', forgotValidation , userController.forgotPassword);
 router.put('/update_profile', upload.single('image') , updateProfileValidation, auth.isAuthorize , userController.updateProfile);

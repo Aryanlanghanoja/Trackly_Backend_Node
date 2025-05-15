@@ -3,11 +3,31 @@ const leadService = require("../service/lead.service");
 exports.createLead = async (req, res) => {
   try {
     const lead = await leadService.createLead(req.body);
-    res.status(201).json(lead);
+    res.status(201).json({
+      message: "Lead created successfully",
+      lead: lead,
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.createLeadFromExcel = async (req, res) => {
+  try {
+    const leads = req.body; // Expecting an array of lead objects
+    const createdLeads = [];
+
+    for (const lead of leads) {
+      const createdLead = await leadService.createLead(lead);
+      createdLeads.push(createdLead);
+    }
+
+    res.status(201).json({ message: "Leads created successfully", data: createdLeads });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 
 exports.getAllLeads = async (req, res) => {
   try {

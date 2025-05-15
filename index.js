@@ -24,7 +24,10 @@ app.set("view", "./view");
 app.use(express.static("public"));
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3001', // frontend URL
+    credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -32,7 +35,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
     secret: process.env.SESSION_SECRET, // ideally store this in env variables
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: { secure: false } // set `true` if using HTTPS
 }));
 

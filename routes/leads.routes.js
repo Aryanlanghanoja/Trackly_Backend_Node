@@ -4,6 +4,7 @@ const leadController = require("../controller/lead.controller");
 
 // CRUD routes
 router.post("/", leadController.createLead);
+router.post("/excel", leadController.createLeadFromExcel);
 router.get("/", leadController.getAllLeads);
 router.get("/:id", leadController.getLeadById);
 router.put("/:id", leadController.updateLead);
