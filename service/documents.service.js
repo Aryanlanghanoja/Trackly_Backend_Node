@@ -54,10 +54,8 @@ async function update(id, params, file) {
 
     if (file) {
         const oldPath = path.join(__dirname, "..",  "public" , doc.doc_path);
-        console.log(oldPath)
         if (fs.existsSync(oldPath)) {
             fs.unlinkSync(oldPath);
-            console.log("Deleted old file");
             doc.doc_path = `documents/${file.filename}`;
         }
     }
@@ -91,7 +89,7 @@ async function deleteByID(id) {
 async function getByLeadId(leadId) {
     return await Document.findAll({
         where: {
-            Lead_ID: leadId
+            lead_id: leadId
         }
     });
 }

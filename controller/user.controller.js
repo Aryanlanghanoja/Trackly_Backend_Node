@@ -226,7 +226,6 @@ const deleteProfile = async (req, res) => {
 
         if (picture) {
             const oldPath = path.join(__dirname, "..",  "public", picture);
-            console.log(oldPath);
             if (fs.existsSync(oldPath)) {
                 fs.unlinkSync(oldPath);
             } 
