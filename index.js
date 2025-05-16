@@ -32,13 +32,13 @@ app.set("view engine", "ejs");
 app.set("views", "./view");
 app.use("/public", express.static(path.join(__dirname, "public/")));
 
-app.use(cookieParser());
 app.use(
   cors({
     origin: "http://localhost:3001", // change as needed
     credentials: true,
   })
 );
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
