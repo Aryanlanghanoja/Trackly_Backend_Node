@@ -9,6 +9,7 @@ const path = require("path");
 const passport = require("passport");
 const passportStrategy = require("./passport");
 const cookieSession = require("cookie-session");
+const cookieParser = require("cookie-parser");
 
 const authRoute = require("./middleware/auth");
 
@@ -31,6 +32,7 @@ app.set("view engine", "ejs");
 app.set("views", "./view");
 app.use("/public", express.static(path.join(__dirname, "public/")));
 
+app.use(cookieParser());
 app.use(
   cors({
     origin: "http://localhost:3001", // change as needed
