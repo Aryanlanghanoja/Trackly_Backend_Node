@@ -81,7 +81,7 @@ const login = async (req, res) => {
     const token = jwt.sign(
       { id: user.user_id, is_admin: user.is_admin },
       JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "7d" }
     );
 
     // ✅ Set token in HTTP-only cookie
@@ -89,7 +89,7 @@ const login = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // true on production (Vercel), false on local
       sameSite: "Lax",
-      maxAge: 3600000, // 1 hour
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
     return res.status(200).json({
@@ -220,8 +220,9 @@ const updateProfile = async (req, res) => {
 };
 
 const getSessionData = (req, res) => {
-  if (req.cookies.token) {
-    return res.status(200).json({ token: req.cookies.token });
+  const token = req.cookies.token;
+  if (token) {
+    return res.status(200).json({ token });
   } else {
     return res.status(401).json({ message: "User not logged in" });
   }
