@@ -84,12 +84,16 @@ const login = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    // Setting Session Data
-    req.session.token = token;
+    // ✅ Set token in HTTP-only cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // true on production (Vercel), false on local
+      sameSite: "Lax",
+      maxAge: 3600000, // 1 hour
+    });
 
     return res.status(200).json({
       message: "Login Successfully",
-      token,
       user,
     });
   } catch (error) {
@@ -216,8 +220,8 @@ const updateProfile = async (req, res) => {
 };
 
 const getSessionData = (req, res) => {
-  if (req.session.token) {
-    return res.status(200).json({ token: req.session.token });
+  if (req.cookies.token) {
+    return res.status(200).json({ token: req.cookies.token });
   } else {
     return res.status(401).json({ message: "User not logged in" });
   }
@@ -237,40 +241,36 @@ const logout = (req, res) => {
 };
 
 const deleteProfile = async (req, res) => {
-    try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-      }
-  
-      const token = req.headers.authorization.split(" ")[1];
-      const decoded = jwt.verify(token, JWT_SECRET);
-  
-      const picture = decoded.profile_photo;
-  
-      if (picture) {
-        const oldPath = path.join(__dirname, "..", "public", picture);
-        if (fs.existsSync(oldPath)) {
-          fs.unlinkSync(oldPath);
-        }
-      }
-  
-      await userService.deleteUserById(decoded.id);
-  
-      return res.status(200).json({
-        message: "Profile deleted successfully",
-      });
-  
-    } catch (error) {
-      return res.status(400).json({
-        message: "Failed to delete profile",
-        error: error.message,
-      });
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
-  };
-  
 
+    const token = req.headers.authorization.split(" ")[1];
+    const decoded = jwt.verify(token, JWT_SECRET);
 
+    const picture = decoded.profile_photo;
+
+    if (picture) {
+      const oldPath = path.join(__dirname, "..", "public", picture);
+      if (fs.existsSync(oldPath)) {
+        fs.unlinkSync(oldPath);
+      }
+    }
+
+    await userService.deleteUserById(decoded.id);
+
+    return res.status(200).json({
+      message: "Profile deleted successfully",
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: "Failed to delete profile",
+      error: error.message,
+    });
+  }
+};
 
 module.exports = {
   getEmployees,
