@@ -34,7 +34,7 @@ app.use("/public", express.static(path.join(__dirname, "public/")));
 
 app.use(
   cors({
-    origin: "http://localhost:3001", // change as needed
+    origin: "https://trackly-five.vercel.app", // change as needed
     credentials: true,
   })
 );
