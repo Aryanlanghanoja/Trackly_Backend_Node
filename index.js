@@ -1,17 +1,15 @@
-require("dotenv").config();
-const express = require("express");
-const serverless = require("serverless-http");
-const cors = require("cors");
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
 const bodyParser = require("body-parser");
-const session = require("express-session");
-const path = require("path");
+const session = require('express-session');
+const path = require('path');
 
 const passport = require("passport");
-const passportStrategy = require("./passport");
 const cookieSession = require("cookie-session");
-const cookieParser = require("cookie-parser");
-
+const passportStrategy = require("./passport");
 const authRoute = require("./middleware/auth");
+const app = express();
 
 // Database Connection
 const dbConfig = require("./config/db.config");
@@ -25,42 +23,37 @@ const followupRouter = require("./routes/followup.routes");
 const taskRouter = require("./routes/tasks.routes");
 const documentRouter = require("./routes/documents.routes");
 
-const app = express();
-
-// View engine and static files
+// Set view engine and public directory
 app.set("view engine", "ejs");
-app.set("views", "./view");
-app.use("/public", express.static(path.join(__dirname, "public/")));
+app.set("view", "./view");
+app.use('/public', express.static(path.join(__dirname, 'public/')));
+// app.use('/images', express.static(path.join(__dirname, 'public/images/')));
+// app.use('/documents', express.static(path.join(__dirname, 'public/documents/')));
 
-app.use(
-  cors({
-    origin: "http://localhost:3001", // change as needed
-    credentials: true,
-  })
-);
-app.use(cookieParser());
+// Middleware
+app.use(cors({
+    origin: 'http://localhost:3001', // frontend URL
+    credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use(
-  session({
+app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false,
-      httpOnly: true,
-      sameSite: "lax",
-    },
-  })
-);
+        secure: false,
+        httpOnly: true,
+        sameSite: 'lax' // important for cross-origin
+    }
+}));
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Routes
+// Route middlewares
 app.use("/", webRouter);
 app.use("/auth", authRoute.router);
 app.use("/api/user", userRouter);
@@ -69,19 +62,21 @@ app.use("/api/followup", followupRouter);
 app.use("/api/task", taskRouter);
 app.use("/api/document", documentRouter);
 
-// Root route
-app.get("/", (req, res) => {
-  res.send("Welcome to the Trackly Lead Management API!");
+// Start the server
+app.get('/', (req, res) => {
+    res.send('Welcome to the Trackly Lead Management API!');
 });
 
-// Conditional for local dev
-if (process.env.NODE_ENV !== "production") {
-  const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-  });
-}
+// Global error handling middleware
+// app.use((err, req, res, next) => {
+//     err.statusCode = err.statusCode || 500;
+//     err.message = err.message || "Internal Server Error";
 
-// ✅ Export for Vercel
-module.exports = app;
-module.exports.handler = serverless(app);
+//     res.status(err.statusCode).json({
+//         message: err.message,
+//     });
+// });
+
+app.listen(process.env.PORT, () => {
+    console.log(`Server running at http://localhost:${process.env.PORT}`);
+});
